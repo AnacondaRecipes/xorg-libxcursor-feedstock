@@ -3,7 +3,6 @@
 {% set name = "xorg-" ~ xorg_name %}
 {% set version = "1.2.3" %}
 {% set sha256 = "fde9402dd4cfe79da71e2d96bb980afc5e6ff4f8a7d74c159e1966afb2b2c2c0" %}
-{% set am_version = "1.16" %} # keep synchronized with build.sh
 
 package:
   name: {{ name|lower }}
@@ -15,6 +14,8 @@ source:
 
 build:
   number: 0
+  # xorg-libxdmcp, libxcb, libx11, libice aren't available on Windows because their dependencies clash with m2/msys2 and mingw64/ucrt64 toolchains.
+  skip: true  # [win]
   run_exports:
     - {{ pin_subpackage(name|lower) }}
 
@@ -54,10 +55,12 @@ test:
 
 about:
   home: https://www.x.org/
+  dev_url: https://gitlab.freedesktop.org/xorg/lib/libxcursor
+  doc_url: https://gitlab.freedesktop.org/xorg/lib/libxcursor
   license: MIT
   license_family: MIT
   license_file: COPYING
-  summary: 'The X.org mouse cursor control library.'
+  summary: The X.org mouse cursor control library.
 
 extra:
   recipe-maintainers:
